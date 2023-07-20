@@ -4,7 +4,7 @@ create table users (
   email varchar(255) not null unique,
   password varchar(255),
   created_at timestamp
-);
+)
 
 create table posts (
   post_id int primary key auto_increment,
@@ -13,5 +13,6 @@ create table posts (
   game_year int,
   game_dev varchar(255),
   status enum ('completed', 'started', 'watchlist'),
-  created_at timestamp
-);
+  created_at timestamp,
+  foreign key (user_id) references users (user_id)
+)
