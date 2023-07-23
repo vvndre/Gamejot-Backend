@@ -111,7 +111,7 @@ let getEntry = function (req, res) {
   //1. want to get id from req params
   //2. we want to exec the sql statement to get the info for an entry from db, but only for that id
 
-  let id = req.params.post_id;
+  let id = req.params.id;
 
   let sql = "select * from posts where post_id = ?";
   let params = [id];
@@ -134,7 +134,7 @@ let deleteEntry = function (req, res) {
   // want to accept a id from the req
   // we will delete a row with matching id
 
-  let id = req.params.post_id;
+  let id = req.params.id;
 
   let sql = "delete from posts where post_id = ?";
   let params = [id];
@@ -144,6 +144,7 @@ let deleteEntry = function (req, res) {
       console.log("delete query failed", err);
       res.sendStatus(500);
     } else {
+      console.log("Successfully deleted Entry!")
       res.sendStatus(204);
     }
   });
@@ -153,6 +154,7 @@ let addEntry = function (req, res) {
   // read some data from request
   // execute the query that will insert data into the database
 
+  let userId = req.userinfo.user_id;
   let gameTitle = req.body.game_title;
   let gameYear = req.body.game_year;
   let gameDev = req.body.game_dev;
@@ -167,8 +169,8 @@ let addEntry = function (req, res) {
   }
 
   let sql =
-    "insert into posts (game_title, game_year, game_dev, status, created_at, post_id) values (?, ?, ?, ?, ?, ?);";
-  let params = [gameTitle, gameYear, gameDev, status, new Date()];
+    "INSERT INTO posts (user_id, game_title, game_year, game_dev, status, created_at) VALUES (?, ?, ?, ?, ?, ?);";
+  let params = [userId, gameTitle, gameYear, gameDev, status, new Date()];
 
   db.query(sql, params, function (err, results) {
     if (err) {
@@ -216,6 +218,23 @@ let updateEntry = function (req, res) {
   });
 };
 
+let getUserPosts = function (req, res) {
+  let userId = req.userinfo.user_id;
+
+  let sql = "SELECT * FROM posts WHERE user_id = ?";
+  let params = [userId];
+
+  db.query(sql, params, function (err, results) {
+    if (err) {
+      console.log("Failed to fetch user posts from the database", err);
+      res.sendStatus(500);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+
 module.exports = {
   registerUser,
   loginUser,
@@ -224,4 +243,5 @@ module.exports = {
   deleteEntry,
   addEntry,
   updateEntry,
+  getUserPosts
 };
