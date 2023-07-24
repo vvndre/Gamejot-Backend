@@ -144,7 +144,7 @@ let deleteEntry = function (req, res) {
       console.log("delete query failed", err);
       res.sendStatus(500);
     } else {
-      console.log("Successfully deleted Entry!")
+      console.log("Successfully deleted Entry!");
       res.sendStatus(204);
     }
   });
@@ -206,13 +206,16 @@ let updateEntry = function (req, res) {
 
   let sql =
     "UPDATE posts SET game_title=?, game_year=?, game_dev=?, status=? WHERE post_id=?;";
-  let params = [id, gameTitle, gameYear, gameDev, status];
+  let params = [gameTitle, gameYear, gameDev, status, id];
 
+  // console.log("Executing SQL query:", sql, params);
+  
   db.query(sql, params, function (err, results) {
     if (err) {
       console.log("Failed to update database", err);
       res.sendStatus(500);
     } else {
+      console.log("Gamejot updated!");
       res.sendStatus(204);
     }
   });
@@ -234,7 +237,6 @@ let getUserPosts = function (req, res) {
   });
 };
 
-
 module.exports = {
   registerUser,
   loginUser,
@@ -243,5 +245,5 @@ module.exports = {
   deleteEntry,
   addEntry,
   updateEntry,
-  getUserPosts
+  getUserPosts,
 };
