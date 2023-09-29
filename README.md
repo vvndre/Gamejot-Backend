@@ -1,2 +1,2 @@
-# gamejot
-capstone project
+# Backend for Gamejot
+Capstone project for ACA
