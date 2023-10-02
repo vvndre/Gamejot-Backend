@@ -221,6 +221,7 @@ let updateEntry = function (req, res) {
   });
 };
 
+
 let getUserPosts = function (req, res) {
   let userId = req.userinfo.user_id;
 

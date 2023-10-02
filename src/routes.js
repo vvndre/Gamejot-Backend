@@ -11,21 +11,21 @@ router.post("/login", controller.loginUser);
 // Lists all Logs/Gamejots
 
 // router.get("/gamejot", middleware.checkJWT, controller.listEntries);
-router.get("/gamejot", controller.listEntries);
+router.get("/gamejots", controller.listEntries);
 
 // Lists One Gamejot by id
-router.get("/gamejot/:id", middleware.checkJWT, controller.getEntry);
+router.get("/gamejots/:id", middleware.checkJWT, controller.getEntry);
 
 // Logs a Gamejot!
-router.post("/gamejot", middleware.checkJWT, controller.addEntry);
+router.post("/gamejots", middleware.checkJWT, controller.addEntry);
 
 // Updates a Gamejot!
-router.put("/gamejot/:id", middleware.checkJWT, controller.updateEntry);
+router.put("/gamejots/:id", middleware.checkJWT, controller.updateEntry);
 
 // Deletes a Gamejot!
-router.delete("/gamejot/:id", middleware.checkJWT, controller.deleteEntry);
+router.delete("/gamejots/:id", middleware.checkJWT, controller.deleteEntry);
 
 // Route to fetch posts for a specific user
-router.get("/user/posts", middleware.checkJWT, controller.getUserPosts);
+router.get("/user/posts/:userId", middleware.checkJWT, controller.getUserPosts);
 
 module.exports = router;
