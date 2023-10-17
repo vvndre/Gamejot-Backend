@@ -26,6 +26,6 @@ router.put("/gamejots/:id", middleware.checkJWT, controller.updateEntry);
 router.delete("/gamejots/:id", middleware.checkJWT, controller.deleteEntry);
 
 // Route to fetch posts for a specific user
-router.get("/user/posts/:userId", middleware.checkJWT, controller.getUserPosts);
+router.get("/user/posts", middleware.checkJWT, controller.getEntriesByUserId);
 
 module.exports = router;

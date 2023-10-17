@@ -130,14 +130,40 @@ let getEntry = function (req, res) {
   });
 };
 
+let getEntriesByUserId = function (req, res) {
+  //1. want to get id from req params
+  //2. we want to exec the sql statement to get the info for an entry from db, but only for that id
+
+  let userId = req.userinfo.id; //comes from token being checked in mw
+  console.log(userId);
+
+  let sql = "select * from posts where user_id = ?";
+  let params = [userId];
+
+  db.query(sql, params, function (err, results) {
+    if (err) {
+      console.log("fail to query database", err);
+      res.sendStatus(500);
+    } else {
+      if (results.length == 0) {
+        res.sendStatus(404);
+      } else {
+        res.json(results);
+      }
+    }
+  });
+};
+
 let deleteEntry = function (req, res) {
   // want to accept a id from the req
   // we will delete a row with matching id
 
   let id = req.params.id;
+  let userId = req.userinfo.id;
 
-  let sql = "delete from posts where post_id = ?";
-  let params = [id];
+  let sql = "delete from posts where post_id = ? and user_id = ?";
+  // let sql = "delete from posts where post_id = ?";
+  let params = [id, userId];
 
   db.query(sql, params, function (err, results) {
     if (err) {
@@ -154,7 +180,7 @@ let addEntry = function (req, res) {
   // read some data from request
   // execute the query that will insert data into the database
 
-  let userId = req.userinfo.user_id;
+  let userId = req.userinfo.id;
   let gameTitle = req.body.game_title;
   let gameYear = req.body.game_year;
   let gameDev = req.body.game_dev;
@@ -186,6 +212,7 @@ let updateEntry = function (req, res) {
   // get the id from the req path param (like del, get)
   // we will get the rest of the info from the req body (like the post)
 
+  let userId = req.userinfo.id;
   let id = req.params.post_id;
   let gameTitle = req.body.game_title;
   let gameYear = req.body.game_year;
@@ -209,7 +236,7 @@ let updateEntry = function (req, res) {
   let params = [gameTitle, gameYear, gameDev, status, id];
 
   // console.log("Executing SQL query:", sql, params);
-  
+
   db.query(sql, params, function (err, results) {
     if (err) {
       console.log("Failed to update database", err);
@@ -217,23 +244,6 @@ let updateEntry = function (req, res) {
     } else {
       console.log("Gamejot updated!");
       res.sendStatus(204);
-    }
-  });
-};
-
-
-let getUserPosts = function (req, res) {
-  let userId = req.userinfo.user_id;
-
-  let sql = "SELECT * FROM posts WHERE user_id = ?";
-  let params = [userId];
-
-  db.query(sql, params, function (err, results) {
-    if (err) {
-      console.log("Failed to fetch user posts from the database", err);
-      res.sendStatus(500);
-    } else {
-      res.json(results);
     }
   });
 };
@@ -246,5 +256,5 @@ module.exports = {
   deleteEntry,
   addEntry,
   updateEntry,
-  getUserPosts,
+  getEntriesByUserId,
 };
