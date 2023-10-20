@@ -9,8 +9,7 @@ router.post("/login", controller.loginUser);
 
 // User usability routes (gamejot routes)
 // Lists all Logs/Gamejots
-
-// router.get("/gamejot", middleware.checkJWT, controller.listEntries);
+// router.get("/gamejots", middleware.checkJWT, controller.listEntries);
 router.get("/gamejots", controller.listEntries);
 
 // Lists One Gamejot by id
