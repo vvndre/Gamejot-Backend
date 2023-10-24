@@ -158,12 +158,12 @@ let deleteEntry = function (req, res) {
   // want to accept a id from the req
   // we will delete a row with matching id
 
-  let id = req.params.id;
+  let gameId = req.params.game_id;
   let userId = req.userinfo.id;
 
-  let sql = "delete from posts where post_id = ? and user_id = ?";
+  let sql = "delete from posts where game_id = ? and user_id = ?";
   // let sql = "delete from posts where post_id = ?";
-  let params = [id, userId];
+  let params = [gameId, userId];
 
   db.query(sql, params, function (err, results) {
     if (err) {
@@ -227,6 +227,7 @@ let updateEntry = function (req, res) {
   let gameYear = req.body.game_year;
   let gameDev = req.body.game_dev;
   let status = req.body.status;
+  let gameId = req.params.game_id;
 
   const validStatusValues = ["completed", "started", "watchlist"];
   if (!validStatusValues.includes(status)) {
@@ -241,10 +242,11 @@ let updateEntry = function (req, res) {
   }
 
   let sql =
-    "UPDATE posts SET game_title=?, game_year=?, game_dev=?, status=? WHERE post_id=?;";
-  let params = [gameTitle, gameYear, gameDev, status, id];
+    "UPDATE posts SET game_title=?, game_year=?, game_dev=?, status=? WHERE game_id=? AND user_id=?;";
+  let params = [gameTitle, gameYear, gameDev, status, gameId, userId];
 
   // console.log("Executing SQL query:", sql, params);
+  // console.log(gameId);
 
   db.query(sql, params, function (err, results) {
     if (err) {

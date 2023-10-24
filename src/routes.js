@@ -19,10 +19,10 @@ router.get("/gamejots/:id", middleware.checkJWT, controller.getEntry);
 router.post("/gamejots", middleware.checkJWT, controller.addEntry);
 
 // Updates a Gamejot!
-router.put("/gamejots/:id", middleware.checkJWT, controller.updateEntry);
+router.put("/gamejots/:game_id", middleware.checkJWT, controller.updateEntry);
 
 // Deletes a Gamejot!
-router.delete("/gamejots/:id", middleware.checkJWT, controller.deleteEntry);
+router.delete("/gamejots/:game_id", middleware.checkJWT, controller.deleteEntry);
 
 // Route to fetch posts for a specific user
 router.get("/user/posts", middleware.checkJWT, controller.getEntriesByUserId);
