@@ -185,6 +185,7 @@ let addEntry = function (req, res) {
   let gameYear = req.body.game_year;
   let gameDev = req.body.game_dev;
   let status = req.body.status;
+  let gameId = req.body.game_id;
 
   const validStatusValues = ["completed", "started", "watchlist"];
   if (!validStatusValues.includes(status)) {
@@ -195,8 +196,16 @@ let addEntry = function (req, res) {
   }
 
   let sql =
-    "INSERT INTO posts (user_id, game_title, game_year, game_dev, status, created_at) VALUES (?, ?, ?, ?, ?, ?);";
-  let params = [userId, gameTitle, gameYear, gameDev, status, new Date()];
+    "INSERT INTO posts (user_id, game_title, game_year, game_dev, status, created_at, game_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
+  let params = [
+    userId,
+    gameTitle,
+    gameYear,
+    gameDev,
+    status,
+    new Date(),
+    gameId,
+  ];
 
   db.query(sql, params, function (err, results) {
     if (err) {
